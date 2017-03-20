@@ -5,7 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.xpleemoon.annotations.demo.annotationprocess.runtime.RuntimeProcessActivity;
+import com.xpleemoon.annotations.demo.annotationprocess.compile.CompileIOCActivity;
+import com.xpleemoon.annotations.demo.annotationprocess.runtime.RuntimeIOCActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +17,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickRuntime(View view) {
-        startActivity(new Intent(this, RuntimeProcessActivity.class));
+        startActivity(new Intent(this, RuntimeIOCActivity.class));
+    }
+
+    public void onClickCompile(View view) {
+        startActivity(new Intent(this, CompileIOCActivity.class));
     }
 }

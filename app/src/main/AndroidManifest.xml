@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.xpleemoon.annotations.demo.annotationprocess.MainActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,8 +16,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.xpleemoon.annotations.demo.annotationprocess.runtime.RuntimeProcessActivity"
-            android:label="运行时注解处理"></activity>
+            android:name=".runtime.RuntimeIOCActivity"
+            android:label="@string/runtime_label" />
+        <activity
+            android:name=".compile.CompileIOCActivity"
+            android:label="@string/compile_label" />
     </application>
 
 </manifest>

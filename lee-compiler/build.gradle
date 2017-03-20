@@ -1,0 +1,13 @@
+apply plugin: 'java'
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':lee-annotations')
+    // 通过注解@AutoService(Processor.class)的方式生成META-INF/services/javax.annotation.processing.Processor，避免手动的尴尬
+    compile 'com.google.auto.service:auto-service:1.0-rc3'
+    // square提供的一个库——用于java文件，比jdk原生的writer更方便
+    compile 'com.squareup:javapoet:1.8.0'
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"

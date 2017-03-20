@@ -6,18 +6,27 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 
-import com.xpleemoon.annotations.runtime.InjectString;
-import com.xpleemoon.annotations.runtime.InjectView;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Created by xplee on 17/3/15.
+ * 运行时IOC注入工具，使用方式见下面代码：
+ * <pre><code>
+ * public class ExampleActivity extends Activity {
+ *   {@literal @}ViewInject(R.id.title) TextView titleView;
+ *
+ *   {@literal @}Override protected void onCreate(Bundle savedInstanceState) {
+ *     super.onCreate(savedInstanceState);
+ *     setContentView(R.layout.example_activity);
+ *     LeeKnife.inject(this);
+ *   }
+ * }
+ * </code></pre>
+ *
+ * @author xpleemoon
  */
-
-public final class InjectUtils {
+final class InjectUtils {
     private static void check(Activity activity) {
         if (activity == null) {
             throw new IllegalStateException("依赖注入的activity不能为null");
@@ -35,9 +44,9 @@ public final class InjectUtils {
         Class<? extends Activity> actClass = activity.getClass();
         Field[] fields = actClass.getDeclaredFields(); // 获取activity中的所有字段
         for (Field field : fields) {
-            InjectString injectString = field.getAnnotation(InjectString.class);
-            if (injectString != null) {
-                String str = injectString.value();
+            StringInject stringInject = field.getAnnotation(StringInject.class);
+            if (stringInject != null) {
+                String str = stringInject.value();
                 if (!TextUtils.isEmpty(str)) {
                     try {
                         field.setAccessible(true);
@@ -49,9 +58,9 @@ public final class InjectUtils {
                 continue;
             }
 
-            InjectView injectView = field.getAnnotation(InjectView.class);
-            if (injectView != null) {
-                int viewId = injectView.id();
+            ViewInject viewInject = field.getAnnotation(ViewInject.class);
+            if (viewInject != null) {
+                int viewId = viewInject.id();
                 if (viewId > 0) {
                     try {
                         Method findViewByIdMethod = actClass.getMethod("findViewById", int.class);

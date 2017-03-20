@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AnnotationProcess.iml" filepath="$PROJECT_DIR$/AnnotationProcess.iml" />
-      <module fileurl="file://$PROJECT_DIR$/annotations/annotations.iml" filepath="$PROJECT_DIR$/annotations/annotations.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android-IOC-Demo.iml" filepath="$PROJECT_DIR$/Android-IOC-Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lee-annotations/lee-annotations.iml" filepath="$PROJECT_DIR$/lee-annotations/lee-annotations.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lee-compiler/lee-compiler.iml" filepath="$PROJECT_DIR$/lee-compiler/lee-compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lee-knife/lee-knife.iml" filepath="$PROJECT_DIR$/lee-knife/lee-knife.iml" />
     </modules>
   </component>
 </project>

@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">AnnotationProcess</string>
+    <string name="app_name">IOC-Demo</string>
+    <string name="runtime_label">运行时IOC</string>
+    <string name="compile_label">编译时IOC</string>
 </resources>
