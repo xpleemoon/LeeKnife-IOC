@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
  *   {@literal @}Override protected void onCreate(Bundle savedInstanceState) {
  *     super.onCreate(savedInstanceState);
  *     setContentView(R.layout.example_activity);
- *     LeeKnife.inject(this);
+ *     InjectUtils.inject(this);
  *   }
  * }
  * </code></pre>
@@ -38,11 +38,11 @@ final class InjectUtils {
         }
     }
 
-    public static void inject(@NonNull Activity activity) {
-        check(activity);
+    public static void inject(@NonNull Activity target) {
+        check(target);
 
-        Class<? extends Activity> actClass = activity.getClass();
-        Field[] fields = actClass.getDeclaredFields(); // 获取activity中的所有字段
+        Class<? extends Activity> targetClz = target.getClass();
+        Field[] fields = targetClz.getDeclaredFields(); // 获取target中的所有字段
         for (Field field : fields) {
             StringInject stringInject = field.getAnnotation(StringInject.class);
             if (stringInject != null) {
@@ -50,7 +50,7 @@ final class InjectUtils {
                 if (!TextUtils.isEmpty(str)) {
                     try {
                         field.setAccessible(true);
-                        field.set(activity, str); // 为InjectString修饰的字段注入字符串
+                        field.set(target, str); // 为StringInject修饰的字段注入字符串
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
@@ -63,10 +63,10 @@ final class InjectUtils {
                 int viewId = viewInject.id();
                 if (viewId > 0) {
                     try {
-                        Method findViewByIdMethod = actClass.getMethod("findViewById", int.class);
-                        View view = (View) findViewByIdMethod.invoke(activity, viewId); // 反射调用，获取view对象
+                        Method findViewByIdMethod = targetClz.getMethod("findViewById", int.class);
+                        View view = (View) findViewByIdMethod.invoke(target, viewId); // 反射调用，获取view对象
                         field.setAccessible(true);
-                        field.set(activity, view); // 为InjectView修饰的字段注入view
+                        field.set(target, view); // 为ViewInject修饰的字段注入view
                     } catch (NoSuchMethodException e) {
                         e.printStackTrace();
                     } catch (InvocationTargetException e) {
