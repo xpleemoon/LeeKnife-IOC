@@ -46,7 +46,7 @@ public class LeeProcessor extends AbstractProcessor {
      */
     private static final String PARAMETER = "target";
     /**
-     * key：类的全限定名；value：对应类中所有注解的集合
+     * key：注解的宿主类的全限定名；value：对应宿主类中所有注解的集合
      */
     private final Map<String, Set<AbstractBinding>> mBindingMap = new HashMap<>();
     /**
@@ -54,11 +54,11 @@ public class LeeProcessor extends AbstractProcessor {
      */
     private Messager mMessager;
     /**
-     * 用语{@link Element}处理的工具类
+     * 用于{@link Element}处理的工具类
      */
     private Elements mElementUtils;
     /**
-     * 用语文件创建
+     * 用于文件创建
      */
     private Filer mFiler;
 
@@ -95,8 +95,8 @@ public class LeeProcessor extends AbstractProcessor {
     /**
      * 解析注解
      *
-     * @param injectorClz
-     * @param injectorElements
+     * @param injectorClz 注解的class对象
+     * @param injectorElements 注解的{@link Element}集合
      */
     private void parseInjector(Class<?> injectorClz, Set<? extends Element> injectorElements) {
         if (injectorClz == null
@@ -107,7 +107,7 @@ public class LeeProcessor extends AbstractProcessor {
 
         mMessager.printMessage(Diagnostic.Kind.NOTE, "解析注解：" + injectorClz.getSimpleName());
 
-        Map<String, List<Element>> map = new HashMap<>();
+        Map<String, List<Element>> map = new HashMap<>(); // key为注解宿主类的全限定名，value为注解element列表
         for (Element element : injectorElements) {
             if (element.getKind() != ElementKind.FIELD) {
                 String exceptionMsg = "Only fields can be annotated with " + injectorClz.getSimpleName();
@@ -158,7 +158,7 @@ public class LeeProcessor extends AbstractProcessor {
             String simpleClzName = TypeInfoUtils.getSimpleClzName(element) + SUFFIX; // 生成java类的simple名
             TypeName typeName = TypeInfoUtils.getEnclosingTypeName(element); // 注解的宿主类
 
-            // 创建一系列方法
+            // 1. 创建一系列绑定方法
             mMessager.printMessage(Diagnostic.Kind.NOTE, "创建入口方法：" + METHOD);
             MethodSpec.Builder bindsMethodBuilder = MethodSpec.methodBuilder(METHOD)
                     .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
@@ -172,7 +172,7 @@ public class LeeProcessor extends AbstractProcessor {
             }
             methodSpecs.add(bindsMethodBuilder.build());
 
-            // 创建java类
+            // 2. 创建java辅助类
             mMessager.printMessage(Diagnostic.Kind.NOTE, "创建类：" + simpleClzName);
             TypeSpec.Builder injectorClzBuilder = TypeSpec.classBuilder(simpleClzName)
                     .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
@@ -184,7 +184,7 @@ public class LeeProcessor extends AbstractProcessor {
             }
             TypeSpec injectorClz = injectorClzBuilder.build();
 
-            // 生成java源文件
+            // 3. 生成java源文件
             mMessager.printMessage(Diagnostic.Kind.NOTE, "创建java源文件：" + simpleClzName);
             JavaFile javaFile = JavaFile.builder(TypeInfoUtils.getPkgName(mElementUtils, element), injectorClz)
                     .addFileComment("This codes are generated automatically. Do not modify!")

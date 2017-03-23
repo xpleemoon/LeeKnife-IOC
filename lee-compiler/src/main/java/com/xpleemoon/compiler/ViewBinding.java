@@ -28,12 +28,12 @@ final class ViewBinding extends AbstractBinding<InjectView> {
         super.generateMethod();
 
         TypeName enclosingTypeName = TypeInfoUtils.getEnclosingTypeName(mElementList.get(0)); // 获取注解宿主类
-        MethodSpec.Builder builder = MethodSpec.methodBuilder(getMethodName())
-                .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
-                .returns(void.class)
-                .addParameter(enclosingTypeName, "target")
-                .addJavadoc("为{@code $N}中{@link $T}注解的view变量绑定数据", "target", mClz);
-        for (Element viewInjectorElement : mElementList) {
+        MethodSpec.Builder builder = MethodSpec.methodBuilder(getMethodName()) // 方法名 bindView
+                .addModifiers(Modifier.PRIVATE, Modifier.STATIC) // 方法修饰 private static
+                .returns(void.class) // 方法返回值 无
+                .addParameter(enclosingTypeName, "target") // 参数名 target
+                .addJavadoc("为{@code $N}中{@link $T}注解的view变量绑定数据", "target", mClz); // 方法注释
+        for (Element viewInjectorElement : mElementList) { // 循环添加语句
             TypeName typeName = TypeInfoUtils.getTypeName(viewInjectorElement); // 获取注解修饰的字段类型
             int viewId = viewInjectorElement.getAnnotation(mClz).id(); // 获取注解指定的id值
             builder.addStatement("target.$N = ($T) target.findViewById($L)", viewInjectorElement.getSimpleName(), typeName, viewId); // 构建赋值语句
